@@ -1,1 +1,1 @@
-gcc main.c -o main
+gcc -static -static-libgcc -static-libstdc++ main.c -o main
