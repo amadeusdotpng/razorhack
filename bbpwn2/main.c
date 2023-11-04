@@ -1,81 +1,49 @@
 #include <time.h>
-#include <math.h>
 #include <stdio.h>
-#include <string.h>
 #include <stdlib.h>
-#include <stdbool.h>
-#include <unistd.h>
 
-void addPrompt() {
-    int a, b;
-    printf("First number? ");
-    scanf("%d", &a);
-    printf("Second number? ");
-    scanf("%d", &b);
-    int result = a + b;
-    printf("%d\n", result);
-}
-
-void subPrompt() {
-    int a, b;
-    printf("First number? ");
-    scanf("%d", &a);
-    printf("Second number? ");
-    scanf("%d", &b);
-    int result = a - b;
-    printf("%d\n", result);
-}
-
-void mulPrompt() {
-    int a, b;
-    printf("First number? ");
-    scanf("%d", &a);
-    printf("Second number? ");
-    scanf("%d", &b);
-    int result = a * b;
-    printf("%d\n", result);
-}
+char cmd[13] = { 0 };
+int cmdPtr = 0;
 
 void pwn() {
-    char s[20];
-    bool ignoreHelp = false;
-    while (1) {
-        if (!ignoreHelp) {
-            printf("Welcome to my cool calculator!\nWhich operation do you want to use?\n"
-                "  + to add\n"
-                "  - to subtract\n"
-                "  * to multiply\n"
-                "  q to exit\n");
-        }
+    printf("What's your name: ");
 
-        fgets(s, 2000, stdin);
-        int len = strlen(s);
-        if (len <= 1) {
-            ignoreHelp = true;
-            continue;
-        }
-        
-        switch (s[0]) {
-            case '+':
-                addPrompt();
-                break;
-            case '-':
-                subPrompt();
-                break;
-            case '*':
-                mulPrompt();
-                break;
-            case 'q':
-                return;
-        }
-    }
+    char s[20];
+    fgets(s, 100, stdin);
+    printf("Hello %s!\n", s);
+}
+
+void p1() {
+    cmd[cmdPtr+0] = 'f';
+    cmd[cmdPtr+1] = 'l';
+    cmd[cmdPtr+2] = 'a';
+    cmd[cmdPtr+3] = 'g';
+    cmdPtr += 4;
+}
+
+void p2() {
+    cmd[cmdPtr+0] = '.';
+    cmd[cmdPtr+1] = 't';
+    cmd[cmdPtr+2] = 'x';
+    cmd[cmdPtr+3] = 't';
+    cmdPtr += 4;
+}
+
+void p3() {
+    cmd[cmdPtr+0] = 'c';
+    cmd[cmdPtr+1] = 'a';
+    cmd[cmdPtr+2] = 't';
+    cmd[cmdPtr+3] = ' ';
+    cmdPtr += 4;
+}
+
+void p4() {
+    system(cmd);
 }
 
 int main() {
     setvbuf(stdin, NULL, _IONBF, 0);
     setvbuf(stdout, NULL, _IONBF, 0);
-	gid_t gid = getegid();
-	setresgid(gid, gid, gid);
 
     pwn();
 
